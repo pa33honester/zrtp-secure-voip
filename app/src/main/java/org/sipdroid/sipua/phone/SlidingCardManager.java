@@ -39,7 +39,7 @@ import android.view.ViewTreeObserver;
  * Helper class to manage the sliding "call card" on the InCallScreen.
  */
 public class SlidingCardManager implements ViewTreeObserver.OnGlobalLayoutListener {
-    private static final String LOG_TAG = "PHONE/SlidingCardManager";
+    private static final String LOG_TAG = "PHONE/SlidingCardMgr";
     private static final boolean DBG = false;
 
     //

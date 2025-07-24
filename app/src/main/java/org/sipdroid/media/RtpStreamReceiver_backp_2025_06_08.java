@@ -1,3 +1,5 @@
+package org.sipdroid.media;
+
 /*
  * Copyright (C) 2009 The Sipdroid Open Source Project
  * Copyright (C) 2005 Luca Veltri - University of Parma - Italy
@@ -19,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package org.sipdroid.media;
 
 import static android.content.ContentValues.TAG;
 

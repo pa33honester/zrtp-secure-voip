@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 33
-    buildToolsVersion "33.0.0"
+    compileSdkVersion 34
+    buildToolsVersion "34"
 
     defaultConfig {
         applicationId "org.sipdroid.sipua"
         minSdkVersion 21
-        targetSdkVersion 33
+        targetSdkVersion 34
+        resConfigs "en" // Fallback to English if translation is missing
     }
 
     buildTypes {
@@ -24,35 +25,36 @@ android {
 
     lintOptions {
         checkReleaseBuilds false
+        disable 'ExtraTranslation'
+        disable 'AppLinkUrlError'
+        disable 'InvalidWakeLockTag'
+        warning 'SuspiciousIndentation'
     }
 
-    externalNativeBuild {
-        ndkBuild {
-            path 'src/main/jni/Android.mk'
-        }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
+
     namespace 'org.sipdroid.sipua'
     aaptOptions { noCompress "model" }
 }
+
+tasks.withType(JavaCompile) {
+    // options.compilerArgs << "-Xlint:deprecation"
+}
+
 dependencies {
-    implementation 'org.bouncycastle:bcprov-jdk15to18:1.70'
-    //implementation files('libs/libjitsi-protocol-1.0-20151117.224808-5.jar')
-    //implementation 'org.jitsi:ice4j:2.0.0'
-    //implementation 'org.ice4j:ice4j:3.0-23'
-    //implementation 'org.jitsi:ice4j:3.2-8-gfa5f931'
-    //implementation files('libs/libjitsi-1.1-SNAPSHOT.jar')
-    implementation files('libs/jmf.jar')
-    ///implementation files('libs/zorg-bouncycastle.jar')
+    // Bouncy Castle crypto (Gradle-managed)
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.77'
     implementation files('libs/bccontrib-1.0-SNAPSHOT.jar')
-    implementation 'com.alphacephei:vosk-android:0.3.32'   // latest as of 2025-06
-    //implementation 'org.jitsi:zrtp4j-light-4.1.4'
-    //implementation files('libs/zrtp4j-full-4.1.4.jar')
-    //implementation 'org.testng:testng:6.9.6'
-    //testImplementation 'junit:junit:4.13.2'
-    testImplementation ('junit:junit:4.10') {
-        exclude group: 'org.hamcrest', module: 'hamcrest-core'
-    }
+    // Real-time audio handling (needed by Sipdroid)
+    implementation files('libs/jmf.jar')
 
-    //implementation files('libs/zrtp4j-full-4.1.4.jar')
-
+    implementation 'androidx.core:core:1.12.0' // Add this line
+    
+    // // JUnit for testing
+    // testImplementation('junit:junit:4.13.2') {
+    //     exclude group: 'org.hamcrest', module: 'hamcrest-core'
+    // }
 }

@@ -54,19 +54,29 @@ public class Bluetooth {
 	}
 	
 	public static boolean isAvailable() {
-		if (!ba.isEnabled())
-			return false;
-		Set<BluetoothDevice> devs = ba.getBondedDevices();
-		for (final BluetoothDevice dev : devs) {
-			BluetoothClass cl = dev.getBluetoothClass();
-			if (cl != null && (cl.hasService(Service.RENDER) ||
-					cl.getDeviceClass() == Device.AUDIO_VIDEO_HANDSFREE ||
-					cl.getDeviceClass() == Device.AUDIO_VIDEO_CAR_AUDIO ||
-					cl.getDeviceClass() == Device.AUDIO_VIDEO_WEARABLE_HEADSET))
-				return true;
+		if (ba == null) {
+			ba = BluetoothAdapter.getDefaultAdapter();
+		}
+		if (ba != null && ba.isEnabled()) {
+			try {
+				Set<BluetoothDevice> devs = ba.getBondedDevices();
+				for (final BluetoothDevice dev : devs) {
+					BluetoothClass cl = dev.getBluetoothClass();
+					if (cl != null && (cl.hasService(Service.RENDER) ||
+							cl.getDeviceClass() == Device.AUDIO_VIDEO_HANDSFREE ||
+							cl.getDeviceClass() == Device.AUDIO_VIDEO_CAR_AUDIO ||
+							cl.getDeviceClass() == Device.AUDIO_VIDEO_WEARABLE_HEADSET)) {
+						return true;
+					}
+				}
+			} catch (SecurityException e) {
+				e.printStackTrace();
+				// Handle the security exception
+			}
 		}
 		return false;
 	}
+
 	
 	public static boolean isSupported() {
 		init();

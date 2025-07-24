@@ -31,6 +31,8 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.IBinder;
 
+import androidx.core.content.ContextCompat;
+
 public class RegisterService extends Service {
 	Receiver m_receiver;
 	Caller m_caller;
@@ -62,7 +64,22 @@ public class RegisterService extends Service {
 			 intentfilter.addAction(Receiver.ACTION_VPN_CONNECTIVITY);
 			 intentfilter.addAction(Receiver.ACTION_SCO_AUDIO_STATE_CHANGED);
 			 intentfilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
-	         registerReceiver(m_receiver = new Receiver(), intentfilter);      
+			 // For Android U+ (API 34+)
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+				registerReceiver(m_receiver = new Receiver(), 
+					intentfilter, 
+					RECEIVER_EXPORTED // Or RECEIVER_NOT_EXPORTED based on your needs
+				);
+			} else {
+				// Legacy registration for older versions
+				// Or use ContextCompat which handles version checks internally
+				ContextCompat.registerReceiver(
+					this,
+					m_receiver = new Receiver(),
+					intentfilter,
+					ContextCompat.RECEIVER_NOT_EXPORTED
+				);
+			}  
 	         intentfilter = new IntentFilter();
         }
         Receiver.engine(this).isRegistered();

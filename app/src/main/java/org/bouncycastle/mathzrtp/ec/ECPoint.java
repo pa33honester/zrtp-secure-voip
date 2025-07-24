@@ -369,6 +369,7 @@ public abstract class ECPoint
          * @deprecated use ECCurve.getInfinity()
          * Constructor for point at infinity
          */
+        @Deprecated
         public F2m(ECCurve curve)
         {
             super(curve, null, null);

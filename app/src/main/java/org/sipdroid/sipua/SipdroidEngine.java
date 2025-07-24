@@ -99,7 +99,7 @@ public class SipdroidEngine implements RegisterAgentListener {
 
 	public boolean StartEngine() {
 			PowerManager pm = (PowerManager) getUIContext().getSystemService(Context.POWER_SERVICE);
-			WifiManager wm = (WifiManager) getUIContext().getSystemService(Context.WIFI_SERVICE);
+			WifiManager wm = (WifiManager) getUIContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 			if (wl == null) {
 				if (!PreferenceManager.getDefaultSharedPreferences(getUIContext()).contains(org.sipdroid.sipua.ui.Settings.PREF_KEEPON)) {
 					Editor edit = PreferenceManager.getDefaultSharedPreferences(getUIContext()).edit();
@@ -128,7 +128,7 @@ public class SipdroidEngine implements RegisterAgentListener {
 			
 			for (UserAgentProfile user_profile : user_profiles) {
 				if (wl[i] == null) {
-					wl[i] = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Sipdroid.SipdroidEngine");
+					wl[i] = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "org.sipdroid:SipdroidEngine");
 					pwl[i] = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "Sipdroid.SipdroidEngine");
 					if (!PreferenceManager.getDefaultSharedPreferences(getUIContext()).getBoolean(org.sipdroid.sipua.ui.Settings.PREF_KEEPON, org.sipdroid.sipua.ui.Settings.DEFAULT_KEEPON)) {
 						wwl[i] = wm.createWifiLock(3, "Sipdroid.SipdroidEngine");

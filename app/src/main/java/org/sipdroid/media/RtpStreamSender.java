@@ -1,3 +1,5 @@
+package org.sipdroid.media;
+
 /*
  * Copyright (C) 2009 The Sipdroid Open Source Project
  * Copyright (C) 2005 Luca Veltri - University of Parma - Italy
@@ -19,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package org.sipdroid.media;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -339,6 +340,14 @@ public class RtpStreamSender extends Thread {
 	/** Runs it in a new Thread. */
 	@TargetApi(23)
 	public void run() {
+		// You might need to replace them with:
+		if (zrtpEngine != null) {
+			// Instead of checking for security established directly, check for SAS verification
+			if (zrtpEngine.isEnrollmentMode()) { // Check if enrollment is active
+				Log.i("ZRTP", "ZRTP is active. SAS: " + Arrays.toString(zrtpEngine.getSasHash()));
+			}
+		}
+    
 		long lastsent = 0;
 
 		if (rtp_socket == null)
